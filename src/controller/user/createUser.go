@@ -7,6 +7,7 @@ import (
 	"github.com/coimbrox/MeuPrimeiroCRUDGo/src/configuration/validation"
 	"github.com/coimbrox/MeuPrimeiroCRUDGo/src/controller/model/request"
 	"github.com/coimbrox/MeuPrimeiroCRUDGo/src/model"
+	"github.com/coimbrox/MeuPrimeiroCRUDGo/src/model/service"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -40,7 +41,10 @@ logger.Info("Init CreateUser controller",
 			userRequest.Age,
 		)
 
-		if err := domain.CreateUser(); err != nil {
+
+		service := service.NewUserDomainService()
+
+		if err := service.CreateUser(domain); err != nil {
 			c.JSON(err.Code, err)
 			return
 		}

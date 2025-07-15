@@ -3,9 +3,16 @@ package model
 import (
 	"crypto/md5"
 	"encoding/hex"
-
-	"github.com/coimbrox/MeuPrimeiroCRUDGo/src/rest_err"
 )
+
+
+type UserDomainInterface interface {
+	GetAge() int
+	GetEmail() string
+	GetName() string
+	GetPassword() string
+	EncryptPassword()
+}
 
 
 func NewUserDomain(
@@ -26,6 +33,21 @@ type userDomain struct {
 	age      int
 }
 
+func (ud *userDomain)  GetEmail() string {
+	return ud.email
+}
+func (ud *userDomain) GetPassword() string {
+	return ud.password
+}
+func (ud *userDomain) GetName() string {
+	return ud.name
+}
+func (ud *userDomain) GetAge() int {
+	return ud.age
+}
+
+
+
 
 func(ud *userDomain) EncryptPassword() {
 	hash := md5.New()
@@ -34,9 +56,3 @@ func(ud *userDomain) EncryptPassword() {
 	ud.password = hex.EncodeToString(hash.Sum(nil))
 }
 
-type UserDomainInterface interface {
-	CreateUser() *rest_err.RestErr
-	UpdateUser(string) *rest_err.RestErr
-	FindUser(string) (*userDomain, *rest_err.RestErr)
-	DeleteUser(string) *rest_err.RestErr
-}
