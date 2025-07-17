@@ -7,7 +7,7 @@ import (
 	"github.com/coimbrox/MeuPrimeiroCRUDGo/src/configuration/validation"
 	"github.com/coimbrox/MeuPrimeiroCRUDGo/src/controller/model/request"
 	"github.com/coimbrox/MeuPrimeiroCRUDGo/src/model"
-	"github.com/coimbrox/MeuPrimeiroCRUDGo/src/model/service"
+	"github.com/coimbrox/MeuPrimeiroCRUDGo/src/view"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -17,7 +17,7 @@ var (
 	UserDomainInterface model.UserDomainInterface
 )
 
-func CreateUser(c *gin.Context) {
+func (uc * userControllerInterface) CreateUser(c *gin.Context) {
 logger.Info("Init CreateUser controller",
 		zap.String("journey", "createUser"),
 	)
@@ -42,9 +42,8 @@ logger.Info("Init CreateUser controller",
 		)
 
 
-		service := service.NewUserDomainService()
 
-		if err := service.CreateUser(domain); err != nil {
+		if err := uc.service.CreateUser(domain); err != nil {
 			c.JSON(err.Code, err)
 			return
 		}
@@ -55,5 +54,5 @@ logger.Info("Init CreateUser controller",
 		"CreateUser controller executed successfully",
 		zap.String("journey", "createUser"))
 
-		c.JSON(http.StatusOK,"")
+		c.JSON(http.StatusOK,view.ConvertDomainToResponse(domain))
 }
